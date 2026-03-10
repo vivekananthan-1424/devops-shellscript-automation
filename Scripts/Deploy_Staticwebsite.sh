@@ -122,7 +122,7 @@ fi
 
 log "Deploying new website to $WEB_ROOT"
 rm -rf "$WEB_ROOT"/*
-if cp -r "$TMP_DIR/$TEMPLATE_FOLDER/"* "$WEB_ROOT/"; then
+if cp -r "$TMP_DIR/$TEMPLATE_FOLDER/"* "$WEB_ROOT"; then
     log "Admin_Dashboard deployed successfully to ($hostname)"
     send_slack "Admin_Dashboard deployed successfully to ($hostname)"
     send_email "Admin_Dashboard Deployment Success" "The website has been successfully deployed to $WEB_ROOT."
