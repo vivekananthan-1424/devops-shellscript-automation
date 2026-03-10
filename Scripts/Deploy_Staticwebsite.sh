@@ -78,6 +78,23 @@ install_packages() {
     done
 }
 
+# Install Web Servers (NGINX & Apache2)
+install_web_servers() {
+    OS=$(detect_os)
+    case $OS in
+        ubuntu|debian)
+            install_package nginx apache2
+            ;;
+        centos|rhel)
+            install_package nginx httpd
+            ;;
+        *)
+            log "Unsupported OS: $OS for web server installation"
+            exit 1
+            ;;
+    esac
+}
+
 #---------------- Start Deployment ------------------------
 
 log "----------- Starting Deployment ---------------------------"
@@ -86,6 +103,9 @@ log "----------- Starting Deployment ---------------------------"
 log "Installing required packages..."
 
 install_packages wget unzip zip mailutils
+
+# Install web servers
+install_web_servers
 
 #step 2: Create Necessary Directories
 log "Folder created for backup and temporary files"
@@ -131,20 +151,21 @@ else
     #Rollback to previous version
     LATEST_BACKUP=$(ls -t "$BACKUP_DIR"/*.zip | head -n 1)
     unzip -o "$LATEST_BACKUP" -d "$WEB_ROOT"
-    send_slack "Website deployment failed for ($hostname)"
+    send_slack "Website deployment failed for ($hostname). Rolled back to previous version."
     send_email "Website Deployment Failure" "Failed to deploy the website to ($hostname). Please check the logs for details."
     exit 1
 fi
 
-# ----------- Restart web server (Nginx/apache2) ---------------
-if systemctl list units --type=service | grep -q nginx; then
+# ----------------- Restart Web Server -----------------
+if systemctl list-units --type=service | grep -q nginx; then
     systemctl restart nginx
-    log "Nginx web server restarted successfully."
+    log "NGINX restarted."
 elif systemctl list-units --type=service | grep -q apache2; then
     systemctl restart apache2
-    log "Apache web server restarted successfully."
-else
-    log "No supported web server found to restart."
+    log "Apache restarted."
+elif systemctl list-units --type=service | grep -q httpd; then
+    systemctl restart httpd
+    log "Apache (httpd) restarted."
 fi
 
 log "Deployment completed successfully."
