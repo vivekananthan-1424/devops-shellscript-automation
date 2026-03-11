@@ -83,10 +83,10 @@ install_web_servers() {
     OS=$(detect_os)
     case $OS in
         ubuntu|debian)
-            install_package nginx apache2
+            install_packages nginx apache2
             ;;
         centos|rhel)
-            install_package nginx httpd
+            install_packages nginx httpd
             ;;
         *)
             log "Unsupported OS: $OS for web server installation"
