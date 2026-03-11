@@ -168,6 +168,6 @@ elif systemctl list-units --type=service | grep -q httpd; then
     log "Apache (httpd) restarted."
 fi
 
-log "Deployment completed successfully."
+log "Deployment completed successfully"
 
 
