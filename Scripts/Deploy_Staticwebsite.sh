@@ -74,7 +74,7 @@ install_packages() {
                  exit 1
                  ;;
         esac
-        log "Installed package: $pkg"
+        log "Installed packages: $pkg"
     done
 }
 
