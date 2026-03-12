@@ -70,7 +70,7 @@ install_packages() {
         case $OS in
             ubuntu|debian)
                  sudo apt-get update -y >> "$LOG_FILE" 2>&1
-                 sudo apt-get install -y "$pkg" >> "$LOG_FILE" 2>&1; then
+                if sudo apt-get install -y "$pkg" >> "$LOG_FILE" 2>&1; then
                         log "Package $pkg installed successfully."
                     else
                         log "Failed to install package $pkg. Check logs for details."
@@ -78,7 +78,7 @@ install_packages() {
                     fi
                  ;;
             centos|rhel)
-                 sudo dnf install -y "$pkg" >> "$LOG_FILE" 2>&1; then
+                 if sudo dnf install -y "$pkg" >> "$LOG_FILE" 2>&1; then
                         log "Package $pkg installed successfully."
                     else
                         log "Failed to install package $pkg. Check logs for details."
