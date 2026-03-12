@@ -1,4 +1,10 @@
 #!/bin/bash
+# Exit immediately if a command fails
+set -o errexit
+
+# Catch errors in pipelines
+set -o pipefail
+
 # ----------------------------------------------------------------------------
 # Script Name: Deploy_Staticwebsite.sh
 # Description: This script deploys a static website to an local machine as first
@@ -63,18 +69,27 @@ install_packages() {
         OS=$(detect_os)
         case $OS in
             ubuntu|debian)
-                 sudo apt-get update -y
-                 sudo apt-get install -y "$pkg"
+                 sudo apt-get update -y >> "$LOG_FILE" 2>&1
+                 sudo apt-get install -y "$pkg" >> "$LOG_FILE" 2>&1; then
+                        log "Package $pkg installed successfully."
+                    else
+                        log "Failed to install package $pkg. Check logs for details."
+                        exit 1
+                    fi
                  ;;
             centos|rhel)
-                 sudo dnf install -y "$pkg"
+                 sudo dnf install -y "$pkg" >> "$LOG_FILE" 2>&1; then
+                        log "Package $pkg installed successfully."
+                    else
+                        log "Failed to install package $pkg. Check logs for details."
+                        exit 1
+                    fi
                  ;;
             *)
                  log "Unsupported OS: $OS"
                  exit 1
                  ;;
         esac
-        log "Installed packages: $pkg"
     done
 }
 
@@ -117,10 +132,19 @@ mkdir -p "$BACKUP_DIR"
 log "Downloading website template from $TEMPLATE_URL"
 
 #cd "$TMP_DIR"
-wget -O "$TMP_DIR/template.zip" "$TEMPLATE_URL"
-unzip -o "$TMP_DIR/template.zip" -d "$TMP_DIR"
+if wget -O "$TMP_DIR/template.zip" "$TEMPLATE_URL" >> "$LOG_FILE" 2>&1; then
+    log "Template downloaded successfully to $TMP_DIR/template.zip"
+else
+    log "Failed to download template from $TEMPLATE_URL. Check logs for details."
+    exit 1
+fi
 
-log "Template downloaded and extracted to $TMP_DIR"
+if unzip -o "$TMP_DIR/template.zip" -d "$TMP_DIR" >> "$LOG_FILE" 2>&1; then
+    log "Template extracted successfully to $TMP_DIR"
+else
+    log "Failed to extract template. Check logs for details."
+    exit 1
+fi
 
 #------------ Backup existing website ----------------
 log "Backing up existing website from $WEB_ROOT to $BACKUP_DIR"
@@ -158,8 +182,12 @@ fi
 
 # ----------------- Restart Web Server -----------------
 if systemctl list-units --type=service | grep -q nginx; then
-    systemctl restart nginx
-    log "NGINX restarted."
+   if systemctl restart nginx >> "$LOG_FILE" 2>&1; then
+        log "NGINX restarted successfully."
+    else
+        log "Failed to restart NGINX. Check logs for details."
+        exit 1
+    fi
 elif systemctl list-units --type=service | grep -q apache2; then
     systemctl restart apache2
     log "Apache restarted."
