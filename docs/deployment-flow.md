@@ -2,7 +2,7 @@
 
 This document explains the deployment workflow used in the automation script.
 
-The deployment process ensures safe and reliable website deployment by including backup, rollback, notifications, and health checks.
+The deployment process ensures safe and reliable website deployment by including backup, rollback and notifications.
 
 ---
 
@@ -127,19 +127,11 @@ This ensures the new content is served immediately.
 
 ---
 
-# 10. Health Check
 
-After deployment, the script verifies that the website is accessible.
-
-Example check:
-
-curl http://localhost
-
-If the response is successful, deployment is considered successful.
 
 ---
 
-# 11. Notifications
+# 10. Notifications
 
 Deployment status notifications are sent via:
 
@@ -154,7 +146,7 @@ Notifications include:
 
 ---
 
-# 12. Logging
+# 11. Logging
 
 All deployment activity is logged into a timestamped log file.
 
@@ -176,6 +168,5 @@ The deployment workflow ensures reliable automation by including:
 - Automated installation
 - Backup protection
 - Rollback mechanism
-- Health verification
 - Notifications
 - Detailed logging

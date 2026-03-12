@@ -1,4 +1,4 @@
-# DevOps Shell Script Deployment Automation 🚀
+# Linux Server Deployment Automation Architecture 🚀
 
 ![Bash](https://img.shields.io/badge/Shell-Bash-green)
 ![Platform](https://img.shields.io/badge/Platform-Linux-blue)
@@ -30,7 +30,6 @@ Below is the deployment workflow used in this project.
 ✔ Automatic rollback on failure  
 ✔ Slack & Email notifications  
 ✔ Deployment logging system  
-✔ Health check validation after deployment  
 ✔ Cron-ready automation support  
 
 ---
@@ -123,7 +122,6 @@ This document explains:
 - Deployment steps
 - Backup mechanism
 - Rollback logic
-- Health checks
 - Notification flow
 
 ---
