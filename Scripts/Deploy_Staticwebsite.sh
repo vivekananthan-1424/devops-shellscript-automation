@@ -143,16 +143,16 @@ fi
 log "Deploying new website to $WEB_ROOT"
 rm -rf "$WEB_ROOT"/*
 if cp -r "$TMP_DIR/$TEMPLATE_FOLDER/"* "$WEB_ROOT"; then
-    log "Admin_Dashboard deployed successfully to ($hostname)"
-    send_slack "Admin_Dashboard deployed successfully to ($hostname)"
+    log "Admin_Dashboard deployed successfully to $(hostname)"
+    send_slack "Admin_Dashboard deployed successfully to $(hostname)"
     send_email "Admin_Dashboard Deployment Success" "The website has been successfully deployed to $WEB_ROOT."
 else
     log "Deployment failed!! Rolling back to previous version from backup."
     #Rollback to previous version
     LATEST_BACKUP=$(ls -t "$BACKUP_DIR"/*.zip | head -n 1)
     unzip -o "$LATEST_BACKUP" -d "$WEB_ROOT"
-    send_slack "Website deployment failed for ($hostname). Rolled back to previous version."
-    send_email "Website Deployment Failure" "Failed to deploy the website to ($hostname). Please check the logs for details."
+    send_slack "Website deployment failed for $(hostname). Rolled back to previous version."
+    send_email "Website Deployment Failure" "Failed to deploy the website to $(hostname). Please check the logs for details."
     exit 1
 fi
 
