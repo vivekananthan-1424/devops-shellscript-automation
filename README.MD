@@ -82,9 +82,9 @@ Create a `.env` file before running the script.
 
 Example configuration:
 
-# SLACK_WEBHOOK_URL=XXXX/XXXX
+SLACK_WEBHOOK_URL=XXXX/XXXX
 
-# EMAIL_RECIPIENTS= your email
+EMAIL_RECIPIENTS= your email
 
 
 ⚠️ Do not commit the `.env` file to GitHub.  
