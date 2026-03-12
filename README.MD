@@ -17,7 +17,7 @@ The goal of this project is to practice **real-world DevOps concepts such as aut
 
 Below is the deployment workflow used in this project.
 
-![Deployment Architecture](Architecture/deployment-architecture.png)
+![Deployment Architecture](Architecture/Deploy-Architecture.png)
 
 ---
 
